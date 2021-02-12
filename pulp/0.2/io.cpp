@@ -1,3 +1,6 @@
+#include <algorithm>
+#include <cctype>
+#include <locale>
 
 void read_adj(char* filename, int& n, long& m,
   int*& out_array, long*& out_degree_list,
@@ -28,6 +31,14 @@ void read_adj(char* filename, int& n, long& m,
 
   while (getline(infile, line))
   {
+    line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](unsigned char ch) {
+	  return !std::isspace(ch);
+	}));
+    line.erase(std::find_if(line.rbegin(), line.rend(), [](unsigned char ch) {
+	  return !std::isspace(ch);
+	}).base(), line.end());
+  
+
     stringstream ss(line);
     out_degree_list[cur_vert] = count;
     if (has_vert_weights)
