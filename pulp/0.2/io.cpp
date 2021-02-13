@@ -27,7 +27,16 @@ void read_adj(char* filename, int& n, long& m,
   int cur_vert = 0;
 
   infile.open(filename);
+  do {
   getline(infile, line);
+      line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](unsigned char ch) {
+          return !std::isspace(ch);
+        }));
+    line.erase(std::find_if(line.rbegin(), line.rend(), [](unsigned char ch) {
+          return !std::isspace(ch);
+        }).base(), line.end());
+  } while (line[0] == '%');
+    
 
   while (getline(infile, line))
   {
@@ -37,6 +46,7 @@ void read_adj(char* filename, int& n, long& m,
     line.erase(std::find_if(line.rbegin(), line.rend(), [](unsigned char ch) {
 	  return !std::isspace(ch);
 	}).base(), line.end());
+    if (line[0] == '%') continue;
   
 
     stringstream ss(line);
@@ -94,7 +104,16 @@ void read_graph(char* filename, int& n, long& m,
   int format = 0;
 
   infile.open(filename);
-  getline(infile, line); printf("%s\n", line.c_str());
+    do {
+  getline(infile, line);
+      line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](unsigned char ch) {
+          return !std::isspace(ch);
+        }));
+    line.erase(std::find_if(line.rbegin(), line.rend(), [](unsigned char ch) {
+          return !std::isspace(ch);
+        }).base(), line.end());
+  } while (line[0] == '%');
+  printf("%s\n", line.c_str());
   sscanf(line.c_str(), "%d %li %d", &n, &m, &format);
   m *= 2;
   infile.close();
